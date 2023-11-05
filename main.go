@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime/middleware"
 
+	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"go-microservice/data"
 	"go-microservice/handlers"
@@ -49,10 +50,14 @@ func main() {
 	getR.Handle("/docs", sh)
 	getR.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
+	//CORS
+	ao := []string{"http://localhost:3000"}
+	ch := gohandlers.CORS(gohandlers.AllowedOrigins(ao))
+
 	// create a new server
 	s := http.Server{
 		Addr:         ":8080",           // configure the bind address
-		Handler:      sm,                // set the default handler
+		Handler:      ch(sm),            // set the default handler
 		ErrorLog:     l,                 // set the logger for the server
 		ReadTimeout:  5 * time.Second,   // max time to read request from the sdk
 		WriteTimeout: 10 * time.Second,  // max time to write response to the sdk
@@ -70,7 +75,7 @@ func main() {
 		}
 	}()
 
-	// trap sigterm or interupt and gracefully shutdown the server
+	// trap sigterm or interrupt and gracefully shutdown the server
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	signal.Notify(c, os.Kill)
@@ -81,5 +86,9 @@ func main() {
 
 	// gracefully shutdown the server, waiting max 30 seconds for current operations to complete
 	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	s.Shutdown(ctx)
+	err := s.Shutdown(ctx)
+	if err != nil {
+		l.Fatal(err)
+		return
+	}
 }
