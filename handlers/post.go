@@ -1,9 +1,8 @@
 package handlers
 
 import (
-	"net/http"
-
 	"go-microservice/data"
+	"net/http"
 )
 
 // swagger:route POST /products products createProduct

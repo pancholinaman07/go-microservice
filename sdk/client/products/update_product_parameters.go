@@ -7,6 +7,7 @@ package products
 
 import (
 	"context"
+	"go-microservice/product-api/sdk/models"
 	"net/http"
 	"time"
 
@@ -14,8 +15,6 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
-
-	"go-microservice/sdk/models"
 )
 
 // NewUpdateProductParams creates a new UpdateProductParams object,

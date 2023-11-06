@@ -2,9 +2,8 @@ package handlers
 
 import (
 	"context"
+	data2 "go-microservice/data"
 	"net/http"
-
-	"go-microservice/data"
 )
 
 // MiddlewareValidateProduct validates the product in the request and calls next if ok
@@ -12,14 +11,14 @@ func (p *Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		rw.Header().Add("Content-Type", "application/json")
 
-		prod := &data.Product{}
+		prod := &data2.Product{}
 
-		err := data.FromJSON(prod, r.Body)
+		err := data2.FromJSON(prod, r.Body)
 		if err != nil {
 			p.l.Println("[ERROR] deserializing product", err)
 
 			rw.WriteHeader(http.StatusBadRequest)
-			data.ToJSON(&GenericError{Message: err.Error()}, rw)
+			data2.ToJSON(&GenericError{Message: err.Error()}, rw)
 			return
 		}
 
@@ -30,7 +29,7 @@ func (p *Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
 
 			// return the validation messages as an array
 			rw.WriteHeader(http.StatusUnprocessableEntity)
-			data.ToJSON(&ValidationError{Messages: errs.Errors()}, rw)
+			data2.ToJSON(&ValidationError{Messages: errs.Errors()}, rw)
 			return
 		}
 

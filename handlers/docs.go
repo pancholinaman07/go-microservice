@@ -15,7 +15,9 @@
 // swagger:meta
 package handlers
 
-import "go-microservice/data"
+import (
+	"go-microservice/data"
+)
 
 //
 // NOTE: Types defined here are purely for documentation purposes

@@ -7,12 +7,11 @@ package products
 
 import (
 	"fmt"
+	"go-microservice/product-api/sdk/models"
 	"io"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-
-	"go-microservice/sdk/models"
 )
 
 // ListProductsReader is a Reader for the ListProducts structure.

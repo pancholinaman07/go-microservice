@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"fmt"
+	"go-microservice/data"
 	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"go-microservice/data"
 )
 
 // KeyProduct is a key used for the Product object in the context

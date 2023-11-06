@@ -1,9 +1,8 @@
 package handlers
 
 import (
+	data2 "go-microservice/data"
 	"net/http"
-
-	"go-microservice/data"
 )
 
 // swagger:route GET /products products listProducts
@@ -16,9 +15,9 @@ func (p *Products) ListAll(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("[DEBUG] get all records")
 	rw.Header().Add("Content-Type", "application/json")
 
-	prods := data.GetProducts()
+	prods := data2.GetProducts()
 
-	err := data.ToJSON(prods, rw)
+	err := data2.ToJSON(prods, rw)
 	if err != nil {
 		// we should never be here but log the error just incase
 		p.l.Println("[ERROR] serializing product", err)
@@ -39,26 +38,26 @@ func (p *Products) ListSingle(rw http.ResponseWriter, r *http.Request) {
 
 	p.l.Println("[DEBUG] get record id", id)
 
-	prod, err := data.GetProductByID(id)
+	prod, err := data2.GetProductByID(id)
 
 	switch err {
 	case nil:
 
-	case data.ErrProductNotFound:
+	case data2.ErrProductNotFound:
 		p.l.Println("[ERROR] fetching product", err)
 
 		rw.WriteHeader(http.StatusNotFound)
-		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		data2.ToJSON(&GenericError{Message: err.Error()}, rw)
 		return
 	default:
 		p.l.Println("[ERROR] fetching product", err)
 
 		rw.WriteHeader(http.StatusInternalServerError)
-		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		data2.ToJSON(&GenericError{Message: err.Error()}, rw)
 		return
 	}
 
-	err = data.ToJSON(prod, rw)
+	err = data2.ToJSON(prod, rw)
 	if err != nil {
 		// we should never be here but log the error just incase
 		p.l.Println("[ERROR] serializing product", err)

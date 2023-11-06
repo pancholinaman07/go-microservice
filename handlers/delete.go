@@ -1,9 +1,8 @@
 package handlers
 
 import (
+	data2 "go-microservice/data"
 	"net/http"
-
-	"go-microservice/data"
 )
 
 // swagger:route DELETE /products/{id} products deleteProduct
@@ -21,12 +20,12 @@ func (p *Products) Delete(rw http.ResponseWriter, r *http.Request) {
 
 	p.l.Println("[DEBUG] deleting record id", id)
 
-	err := data.DeleteProduct(id)
-	if err == data.ErrProductNotFound {
+	err := data2.DeleteProduct(id)
+	if err == data2.ErrProductNotFound {
 		p.l.Println("[ERROR] deleting record id does not exist")
 
 		rw.WriteHeader(http.StatusNotFound)
-		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		data2.ToJSON(&GenericError{Message: err.Error()}, rw)
 		return
 	}
 
@@ -34,7 +33,7 @@ func (p *Products) Delete(rw http.ResponseWriter, r *http.Request) {
 		p.l.Println("[ERROR] deleting record", err)
 
 		rw.WriteHeader(http.StatusInternalServerError)
-		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		data2.ToJSON(&GenericError{Message: err.Error()}, rw)
 		return
 	}
 

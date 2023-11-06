@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"go-microservice/data"
+	"go-microservice/handlers"
 	"log"
 	"net/http"
 	"os"
@@ -12,8 +14,6 @@ import (
 
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"go-microservice/data"
-	"go-microservice/handlers"
 )
 
 func main() {
